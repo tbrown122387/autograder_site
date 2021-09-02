@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card elevation="2">
-      <v-card-title>Card Title</v-card-title>
+      <v-card-title>API Request Example</v-card-title>
       <v-card-text>{{ text }}</v-card-text>
       <v-card-actions>
         <v-btn text color="teal" @click="sendRequest">Submit Request</v-btn>
