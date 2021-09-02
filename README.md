@@ -24,7 +24,7 @@ There are two primary ways to launch the development version of the website, usi
 For first time setup or if there are changes to `requirements.txt` or `package.json`:
 
 ```console
-$ docker compose up --build
+$ docker-compose up --build
 ```
 
 For any other time:
@@ -32,6 +32,7 @@ For any other time:
 ```console
 $ docker compose up
 ```
+Note that you may need `docker-compose` instead of `docker compose`.
 
 Then, navigate to `localhost:8080` to see the website. When making changes to either the client or the API, hot-reloading is enabled, so the page will update whenever a change is saved.
 
