@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     sendRequest() {
-      process.env.VUE_APP_API_ENDPOINT;
       axios
         .get(process.env.VUE_APP_API_ENDPOINT + "/api/sample")
         .then((response) => (this.text = response.data));
