@@ -19,17 +19,27 @@ There are two primary ways to launch the development version of the website, usi
 2. Verify Docker is installed with `docker --version`
 
 #### Guide
-For first time setup or if there are changes to requirements.txt or package.json
+> This may not work on Windows, let us know if you encounter any issues
+> 
+For first time setup or if there are changes to `requirements.txt` or `package.json`:
+
 ```console
 $ docker compose up --build
 ```
-For any other time
+
+For any other time:
+
 ```console
 $ docker compose up
 ```
-> This may not work on Windows, let us know if you encounter any issues
-> 
+
 Then, navigate to `localhost:8080` to see the website. When making changes to either the client or the API, hot-reloading is enabled, so the page will update whenever a change is saved.
+
+If you want to fully close the website and delete associated data:
+```
+$ docker compose down
+```
+
 
 #### Details
 `docker-compose.yml` defines all the services needed. Currently, there is a client that is the frontend and a server that is the backend. The `Dockerfile` in each folder shows how the container is built.
@@ -51,7 +61,7 @@ $ npm install
 2. Create a virtual env for python and install the necessary packages
 ```console
 $ cd server
-$ python3 -m venv venv #creates a virtual environment with the name 'venv'
+$ python3 -m venv venv # creates a virtual environment with the name 'venv'
 $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
@@ -65,6 +75,6 @@ $ npm run serve
 4. Start the Python development server in a different terminal window
 ```console
 $ cd server
-$ source venv/bin/activate #needed if new terminal session
+$ source venv/bin/activate # needed if new terminal session
 $ python3 main.py
 ```
