@@ -24,7 +24,7 @@ There are two primary ways to launch the development version of the website, usi
 For first time setup or if there are changes to `requirements.txt` or `package.json`:
 
 ```console
-$ docker-compose up --build
+$ docker compose up --build
 ```
 
 For any other time:
