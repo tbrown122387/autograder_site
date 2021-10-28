@@ -18,6 +18,7 @@ from snippets import (make_grade_one_submission, make_run_autograder,
 app = FastAPI()
 
 origins = [
+    "*",
     "http://localhost:8080",
 ]
 
