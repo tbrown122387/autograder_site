@@ -14,8 +14,11 @@
       <comment-form />
     </v-col>
     <v-col>
-      <comments-card />
+      <v-card elevation="4" class="m-4">
+        <comments-card />
+      </v-card>
     </v-col>
+    {{ sample }}
   </v-container>
 </template>
 
@@ -33,6 +36,11 @@ export default {
     return {
       text: "Send a request to change this text",
     };
+  },
+  computed: {
+    sample() {
+      return this.$store.state["RGradingGradescope"].assignmentName;
+    },
   },
   methods: {
     sendRequest() {
