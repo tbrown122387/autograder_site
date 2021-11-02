@@ -8,7 +8,47 @@
               Instructions
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              This page is for Autograding with Gradescope for R with gradeR.
+              <v-card flat>
+                <v-card-text
+                  >This page is for Autograding with Gradescope for R with
+                  gradeR. After filling out the required fields, the website
+                  produces a <code>data.zip</code>, which can then be uploaded
+                  to Gradescope.</v-card-text
+                >
+                <v-card-title>Assignment Name</v-card-title>
+                <v-card-text
+                  >Assignment name is required. It is the name of the assignment
+                  that students submit to Gradescope. Every submission has to
+                  have this title, or the autograder will not work properly. In
+                  addition, the file names are case-sensitive.</v-card-text
+                >
+                <v-card-title> Additional Packages </v-card-title>
+                <v-card-text>
+                  If there are any additional packages needed, list them here
+                  with a comma in between. Currently, there is not support for a
+                  set-up section (for calling <code>library()</code>), so code
+                  involving libraries need to prefaced for each function, e.g.
+                  <code>stringr::str_count()</code>. This feature will be added
+                  in future updates.
+                </v-card-text>
+                <v-card-title> Datasets </v-card-title>
+                <v-card-text>
+                  As many datasets can be added as desired, but the total size
+                  must be less than 10 MB (This will change in future updates).
+                  Students must reference the dataset from the same directory as
+                  the submission file, i.e.
+                  <code>read.csv("dataset.csv")</code>. The following will not
+                  work <code>read.csv("data/dataset.csv")</code>. The working
+                  directory should not be changed either, so students must
+                  comment out <code>setwd()</code> if used.
+                </v-card-text>
+                <v-card-title> Tests </v-card-title>
+                <v-card-text>
+                  At least one test is required to create the bundle. The code
+                  section for each test expects a <code>TRUE</code> if the
+                  answer is correct.
+                </v-card-text>
+              </v-card>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -131,6 +171,7 @@
                             label="Code"
                             v-model="codes[n - 1]"
                             :rules="existsRule"
+                            placeholder="Ex: length(lm.mod$coefficients) == 4"
                             required
                             outlined
                             dense
@@ -166,7 +207,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
+    <!-- <v-row>
       <v-col>
         <v-card elevation="2">
           <v-card-text>{{ numberOfTests }}</v-card-text>
@@ -179,7 +220,7 @@
           <v-card-text>{{ codes }}</v-card-text>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 

@@ -29,10 +29,8 @@ The frontend is deployed using Github Pages.
 
 The development version is used when running `docker compose up` as stated in the `README.md` of the root of the repo. The development version is useful for development (obviously) as it hot reloads on changes and contains debugging utilities. However, it is far slower, so the website needs to be built into the production version for better stability and latency.
 
-Github Pages deploys whatever is in the `gh-pages` branch in the main repo (https://github.com/tbrown122387/autograder_site/tree/gh-pages). Since `npm run build` builds a static production version of the site into the `dist/` directory, we can directly push the `client/dist/` directory to the `gh-pages` branch.
-```console
-$ git subtree push --prefix client/dist upstream gh-pages
-```
+Github Pages deploys whatever is in the `gh-pages` branch in the main repo (https://github.com/tbrown122387/autograder_site/tree/gh-pages).
+
 
 > `upstream` is the shorthand name for remote branch of the main repository. It may be called something else, so use the following command to check what it is.
 >    ```console
@@ -42,8 +40,23 @@ $ git subtree push --prefix client/dist upstream gh-pages
 >    ```
 > It is very important to ensure that your configuration is correct for these commands.
 
-In cases where multiple users are deploying, sometimes the `gh-pages` branch can have merge conflicts. While these will be resolved in the main development branch on Github, the `gh-pages` branch will not get those updates. Therefore, use the following code to force push any changes to deploy.
+In cases where multiple users are deploying, sometimes the `gh-pages` branch can have merge conflicts. While these will be resolved in the main development branch on Github, the `gh-pages` branch will not get those updates. Therefore, use the following code to (force) push any changes to deploy.
 
 ```console
-$ git push upstream `git subtree split --prefix client/dist main`:gh-pages --force
+$ npm run build
+$ cp dist/index.html dist/404.html
+$ git add .
+$ git commit -m "gh-pages deploy"
+$ cd ..
+$ git subtree split --prefix client/dist -b gh-pages
+$ git push upstream gh-pages # --force if there are merge conflicts
 ```
+
+> There is an issue with SPA on Github. When using Vue-Router, urls should direct to their page (e.g. `/grading` should directly go to the grading tab). However, Github pages attempts to find the `/grading` file in the repository (as if getting a static file), which would not exist. In a situation where the developer has control over the server, the proper solution would be to serve `index.html` if the URL does not match any static assests. A workaround is to create a `404.html` page identical to the `index.html`, so the `404.html` page is served when a route is not found. There are many issues with this approach, but it should work as a proof of concept.
+>
+> More details here:
+> 
+> https://github.com/rafgraph/spa-github-pages
+> 
+> https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
+
