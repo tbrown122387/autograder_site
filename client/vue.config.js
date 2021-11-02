@@ -6,6 +6,5 @@ module.exports = {
       title: "Autograding Bundler",
     },
   },
-  publicPath:
-    process.env.NODE_ENV === "production" ? "/autograding_site/" : "/",
+  publicPath: process.env.NODE_ENV === "production" ? "/autograder_site/" : "/",
 };
