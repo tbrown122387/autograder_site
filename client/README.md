@@ -18,8 +18,3 @@ All the development code is located in the `src` folder. To use the website in p
 `App.vue` contains the navigation bar at the top, an empty footer, and the `<router-view>`. This `<router-view>` is defined in `src/router/index.js`. Each url is given a "View" from `src/views/`. For `/` (root of the website, i.e. `localhost:8080/` when running locally), `src/views/Home.vue` is what is displayed. The "Home" view can also use components which are defined in the `src/components/` folder. Components are what makes development fast and easy, because pieces can be generalized and reused for different pages.
 
 The "About" view, whose code is in `src/views/About.vue` demonstrates how to call an API from the frontend. When a button is clicked, a function is run, which in this case uses the `axios` HTTP client to make a request to the backend. The reactive value `text` is then set to the response of the API call.
-
-## Run without Docker
-```
-$ export VUE_APP_API_ENDPOINT=http://localhost:5000; npm run serve
-```
