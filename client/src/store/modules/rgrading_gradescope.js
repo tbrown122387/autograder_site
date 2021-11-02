@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const state = () => ({
+  bundleName: "",
   assignmentName: "",
   packageNames: "",
   numberOfTests: 1,
@@ -10,13 +11,12 @@ const state = () => ({
   codes: [],
 });
 
-const getters = {
-  sampleGetter(state) {
-    return state.comments;
-  },
-};
+const getters = {};
 
 const actions = {
+  setBundleName: function ({ commit }, bundleName) {
+    commit("setBundleName", bundleName);
+  },
   setAssignmentName: function ({ commit }, assignmentName) {
     commit("setAssignmentName", assignmentName);
   },
@@ -52,6 +52,9 @@ const actions = {
 };
 
 const mutations = {
+  setBundleName: function (state, bundleName) {
+    state.bundleName = bundleName;
+  },
   setAssignmentName: function (state, assignmentName) {
     state.assignmentName = assignmentName;
   },

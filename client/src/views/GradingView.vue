@@ -8,11 +8,7 @@
               Instructions
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              This page is for Autograding with
-              <v-chip class="ma-2" label>
-                <a href="https://www.gradescope.com/">Gradescope</a>
-              </v-chip>
-              for R with gradeR.
+              This page is for Autograding with Gradescope for R with gradeR.
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -30,11 +26,11 @@
                           outlined
                           dense
                           color="teal"
+                          v-model="bundleName"
                           value="Untitled01"
                           label="Bundle Name"
-                        ></v-text-field>
+                        />
                       </v-col>
-                      <v-col cols="12"> Last saved 15 minutes ago </v-col>
                     </v-row>
                   </v-card-text>
                 </v-card>
@@ -56,7 +52,7 @@
                             label="Assignment Name"
                             placeholder="Ex: assignment01.R"
                             required
-                          ></v-text-field>
+                          />
                         </v-col>
 
                         <v-col cols="12" md="4">
@@ -64,15 +60,18 @@
                             v-model="packageNames"
                             label="Additional Packages (optional)"
                             placeholder="Ex: survival, data.table, caret"
-                          ></v-text-field>
+                          />
                         </v-col>
 
                         <v-col cols="12" md="4">
                           <v-file-input
                             label="Datasets (optional)"
+                            :rules="filesRule"
                             v-model="datasets"
                             multiple
-                          ></v-file-input>
+                            show-size
+                            counter
+                          />
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -167,36 +166,40 @@
         </v-card>
       </v-col>
     </v-row>
-    <!-- <v-row>
+    <v-row>
       <v-col>
         <v-card elevation="2">
           <v-card-text>{{ numberOfTests }}</v-card-text>
           <v-card-text>{{ packageNames.split(",") }}</v-card-text>
-          <v-card-text>{{ datasets.map((file) => file.name) }}</v-card-text>
+          <v-card-text>{{
+            datasets.map((file) => [file.name, file.size])
+          }}</v-card-text>
           <v-card-text>{{ labels }}</v-card-text>
           <v-card-text>{{ visibilities }}</v-card-text>
           <v-card-text>{{ codes }}</v-card-text>
         </v-card>
       </v-col>
-    </v-row> -->
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import axios from "axios";
-// import MonacoEditor from "vue-monaco";
 import { mapActions, mapState } from "vuex";
 
 export default {
-  components: {
-    // MonacoEditor,
-  },
+  components: {},
   data: () => {
     return {
       loading: false,
       response: "",
       valid: false,
-      visiblilitySelector: ["Visible", "After Due Date", "Hidden"],
+      visiblilitySelector: [
+        { text: "Visible", value: "visible" },
+        { text: "After Due Date", value: "after_due_date" },
+        { text: "After Published", value: "after_published" },
+        { text: "Hidden", value: "hidden" },
+      ],
       assignmentNameRules: [
         (v) => !!v || "Assignment name is required",
         (v) =>
@@ -204,6 +207,12 @@ export default {
           "Must have valid file ending (.R or .r)",
       ],
       existsRule: [(v) => !!v || "This field is required"],
+      filesRule: [
+        (v) =>
+          !v.length ||
+          v.map((file) => file.size).reduce((a, b) => a + b) < 10000000 || // ten bytes
+          "Must not exceed 10 MB",
+      ],
     };
   },
   computed: {
@@ -211,6 +220,14 @@ export default {
       return this.numberOfTests > 1 ? "Tests" : "Test";
     },
     ...mapState("RGradingGradescope", ["numberOfTests"]),
+    bundleName: {
+      get() {
+        return this.$store.state["RGradingGradescope"].bundleName;
+      },
+      set(value) {
+        this.$store.dispatch("RGradingGradescope/setBundleName", value);
+      },
+    },
     assignmentName: {
       get() {
         return this.$store.state["RGradingGradescope"].assignmentName;
