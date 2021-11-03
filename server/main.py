@@ -73,13 +73,6 @@ def read_comment():
         return heroes
 
 
-@app.post("/uploadfile1")
-def create_upload_file(file: UploadFile = File(...)):
-    contents: str = file.file.read()
-    headers = {"Content-Disposition": "attachment; filename=data_pandas.csv"}
-    return FileResponse('data_pandas.csv', headers=headers)
-
-
 @app.post("/uploadfile")
 async def create_upload_file(
         assignment_name: str = Form(...),

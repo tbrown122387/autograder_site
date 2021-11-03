@@ -26,10 +26,10 @@
                 <v-card-text>
                   If there are any additional packages needed, list them here
                   with a comma in between. Currently, there is not support for a
-                  set-up section (for calling <code>library()</code>), so code
-                  involving libraries need to prefaced for each function, e.g.
-                  <code>stringr::str_count()</code>. This feature will be added
-                  in future updates.
+                  set-up section for tests (for calling <code>library()</code>),
+                  so tests involving libraries need to prefaced for each
+                  function, e.g. <code>stringr::str_count()</code>. Students can
+                  still use libraries as normal.
                 </v-card-text>
                 <v-card-title> Datasets </v-card-title>
                 <v-card-text>
@@ -99,7 +99,7 @@
                           <v-text-field
                             v-model="packageNames"
                             label="Additional Packages (optional)"
-                            placeholder="Ex: survival, data.table, caret"
+                            placeholder="Ex: survival, stringr, caret"
                           />
                         </v-col>
 
@@ -244,7 +244,7 @@ export default {
       assignmentNameRules: [
         (v) => !!v || "Assignment name is required",
         (v) =>
-          v.substring(v.length - 2) === ".R" ||
+          v.substring(v.length - 2).toLowerCase() === ".r" ||
           "Must have valid file ending (.R or .r)",
       ],
       existsRule: [(v) => !!v || "This field is required"],
