@@ -15,8 +15,6 @@ services:
     volumes:
       - ./client/:/app/
       - node_modules:/app/node_modules/
-    environment:
-      - VUE_APP_API_ENDPOINT=${VUE_APP_API_ENDPOINT}
     depends_on:
       - postgres
   server:

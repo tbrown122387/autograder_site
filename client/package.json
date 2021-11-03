@@ -11,7 +11,10 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "monaco-editor": "^0.28.1",
+    "monaco-editor-webpack-plugin": "^4.2.0",
     "vue": "^2.6.11",
+    "vue-monaco": "^1.2.2",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0",
     "vuex": "^3.4.0"

@@ -2,12 +2,18 @@
   <!-- App.vue -->
 
   <v-app>
-    <v-app-bar app color="white" flat>
-      <v-tabs centered class="ml-n9" color="grey darken-1">
-        <v-tab to="/">Home</v-tab>
-        <v-tab to="/about">About</v-tab>
-      </v-tabs>
-    </v-app-bar>
+    <v-card elevation="2" flat>
+      <v-app-bar color="teal" dark>
+        <v-container>
+          <v-app-bar-title>Autograding Bundler</v-app-bar-title>
+        </v-container>
+
+        <v-tabs class="m9-nl" right background-color="teal" dark>
+          <v-tab color="white" to="/">Home</v-tab>
+          <v-tab color="white" to="/grading">Grading in R</v-tab>
+        </v-tabs>
+      </v-app-bar>
+    </v-card>
 
     <!-- Sizes your content based upon application components -->
     <v-main>
@@ -27,5 +33,8 @@
 <script>
 export default {
   name: "App",
+  data() {
+    return {};
+  },
 };
 </script>
