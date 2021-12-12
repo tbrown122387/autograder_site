@@ -11,5 +11,7 @@ class Comment(SQLModel, table=True):
 
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
     email: str
+    hash_password: str
+    username: str
+    name: str

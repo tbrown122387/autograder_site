@@ -1,5 +1,5 @@
 import os
-from sqlmodel import create_engine
+from sqlmodel import create_engine, SQLModel
 
 
 DATABASE_URL: str = os.environ.get("DATABASE_URL")
@@ -18,3 +18,7 @@ elif DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://")
 
 engine = create_engine(DATABASE_URL, echo=True)
+
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
