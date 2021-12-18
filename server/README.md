@@ -51,3 +51,7 @@ The `Procfile` details the running configuration for Heroku.
   - Needs to be combined with CI Testing Suite to ensure build failures don't occur
   - https://stackoverflow.com/questions/39197334/automated-heroku-deploy-from-subfolder - Heroku Buildpack needed
 - Multiple Workers in Deployment
+
+```console
+$ docker exec grading-site-api python3 -m pytest
+```
