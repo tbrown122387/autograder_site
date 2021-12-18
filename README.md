@@ -42,3 +42,15 @@ $ docker compose down
 
 #### Details
 `docker-compose.yml` defines all the services needed. Currently, there is a client that is the frontend, a server that is the backend, a PostgreSQL database, and PGAdmin for monitoring the development database. The `Dockerfile` in the client and server folder shows how the container is built for each service.
+
+## TODO
+- [x] Backend - Refactor into Modules
+- [ ] Backend - Authentication
+- [ ] Backend - Testing
+- [ ] Backend - GitHub Actions for CI
+- [ ] Frontend - Testing
+- [ ] Frontend - GitHub Actions for CI
+- [ ] Support for Setup Code
+- [ ] Support for .Rmd
+- [ ] Zip on Frontend
+- [ ] GitHub Actions for CD
