@@ -1,18 +1,7 @@
 <template>
-  <!-- App.vue -->
-
   <v-app>
     <v-card elevation="2" flat>
-      <v-app-bar color="teal" dark>
-        <v-container>
-          <v-app-bar-title>Autograding Bundler</v-app-bar-title>
-        </v-container>
-
-        <v-tabs class="m9-nl" right background-color="teal" dark>
-          <v-tab color="white" to="/">Home</v-tab>
-          <v-tab color="white" to="/grading">Grading in R</v-tab>
-        </v-tabs>
-      </v-app-bar>
+      <HeaderBar />
     </v-card>
 
     <!-- Sizes your content based upon application components -->
@@ -31,8 +20,12 @@
 </template>
 
 <script>
+import HeaderBar from "./components/HeaderBar.vue";
 export default {
   name: "App",
+  components: {
+    HeaderBar,
+  },
   data() {
     return {};
   },
