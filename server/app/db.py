@@ -1,8 +1,10 @@
+from typing import Optional
+
 import os
 from sqlmodel import create_engine, SQLModel
 
 
-DATABASE_URL: str = os.environ.get("DATABASE_URL")
+DATABASE_URL: Optional[str] = os.environ.get("DATABASE_URL")
 
 if not DATABASE_URL:
     POSTGRES_USER = os.environ.get('POSTGRES_USER')

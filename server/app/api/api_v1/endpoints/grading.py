@@ -1,7 +1,7 @@
 import ast
 import io
 import zipfile
-from typing import List
+from typing import List, Dict
 
 from app.snippets import (make_grade_one_submission, make_run_autograder,
                           make_run_tests, make_setup_sh)
@@ -23,10 +23,10 @@ async def create_upload_file(
     # issue with List[str] interpreted as one element list, so need to convert str to List - https://github.com/tiangolo/fastapi/issues/842#issuecomment-857621157
     # TODO: ast.literal_eval() research speed/security - use json or custom solution?
     if package_names:
-        package_names = ast.literal_eval(package_names)
-    labels = ast.literal_eval(labels)
-    visibilities = ast.literal_eval(visibilities)
-    codes = ast.literal_eval(codes)
+        package_names_list: List[str] = ast.literal_eval(package_names)
+    labels_list: List[str] = ast.literal_eval(labels)
+    visibilities_list: List[str] = ast.literal_eval(visibilities)
+    codes_list: List[str] = ast.literal_eval(codes)
 
     if datasets:
         datasets_str = [
@@ -43,10 +43,10 @@ async def create_upload_file(
                 if datasets:
                     for dataset in datasets_str:
                         zip_file.writestr(dataset['filename'], data=dataset['data'])
-                zip_file.writestr("setup.sh", data=make_setup_sh(package_names))
+                zip_file.writestr("setup.sh", data=make_setup_sh(package_names_list))
                 zip_file.writestr("run_autograder", data=make_run_autograder(assignment_name))
                 zip_file.writestr("grade_one_submission.R", data=make_grade_one_submission(assignment_name))
-                zip_file.writestr("run_tests.R", data=make_run_tests(labels, visibilities, codes))
+                zip_file.writestr("run_tests.R", data=make_run_tests(labels_list, visibilities_list, codes_list))
             bytes.seek(0)
             yield from bytes
 

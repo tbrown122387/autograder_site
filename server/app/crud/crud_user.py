@@ -1,12 +1,13 @@
+from typing import Optional
+
 from app.core.security import get_password_hash, verify_password
-from app.db import engine
 from app.models import Comment, User
 from sqlmodel import Session, select
 
 
 def reset_password(session: Session, email: str, password: str):
     statement = select(User).where(User.email == email)
-    user: User = session.exec(statement).first()
+    user: Optional[User] = session.exec(statement).first()
     if user:
         user.hash_password = get_password_hash(password)
         session.add(user)
