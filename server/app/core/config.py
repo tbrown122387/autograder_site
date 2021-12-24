@@ -11,5 +11,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     API_V1_STR: str = "/api/v1"
 
+    TEST_USER_1_EMAIL: str = "test@testing.com"
+    TEST_USER_1_PASSWORD: str = "testPassword"
+
 
 settings = Settings()

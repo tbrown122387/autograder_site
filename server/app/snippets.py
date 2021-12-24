@@ -56,34 +56,6 @@ def make_run_tests(labels: List[str], visibilities: List[str], codes: List[str])
 
 
 def make_test_snippet(labels: List[str], visibilities: List[str], codes: List[str]):
-    return "".join(test_template.format(label=label, visibility=visibility, code=code) for label, visibility, code in zip(labels, visibilities, codes))
-
-
-if __name__ == "__main__":
-    labels = [
-        "Q1",
-        "Q2",
-        "Q3"
-    ]
-
-    visibilities = [
-        "visible",
-        "after_duedate",
-        "visible",
-    ]
-
-    codes = [
-        "length(x) == 3",
-        "sum(x) == 10",
-        ""
-    ]
-
-    package_names = ['MASS', ' survival']
-    print(make_setup_sh(package_names))
-
-    assignment_name = "assignment01.R"
-    print(make_run_autograder(assignment_name))
-
-    print(make_grade_one_submission(assignment_name))
-
-    print(make_run_tests(labels, visibilities, codes))
+    return "".join(
+        test_template.format(label=label, visibility=visibility, code=code) for label, visibility,
+        code in zip(labels, visibilities, codes))

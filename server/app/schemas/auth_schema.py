@@ -14,8 +14,3 @@ class TokenData(BaseModel):
 
 class RequestPasswordReset(BaseModel):
     email: str
-
-
-class PasswordResetBody(BaseModel):
-    pw_reset_token: str
-    password: str

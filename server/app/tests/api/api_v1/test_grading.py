@@ -1,21 +1,7 @@
 from fastapi.testclient import TestClient
-
-from app.main import app
-
-client = TestClient(app)
+import pytest
 
 
-def test_read_main():
-    """Test somethings
-    """
-    response = client.get("/api/v1/sample")
-    assert response.status_code == 200
-    assert response.json() == {"hello": "world"}
-
-
-def test_read_main1():
-    """Test somethings
-    """
-    response = client.get("/api/v1/sample")
-    assert response.status_code == 400
-    assert response.json() == {"hello": "pass"}
+@pytest.mark.skip(reason="Not implemented yet")
+def test_post_upload_file(client: TestClient):
+    pass
