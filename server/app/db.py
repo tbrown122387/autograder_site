@@ -17,9 +17,10 @@ if not DATABASE_URL:
 elif DATABASE_URL.startswith("postgres://"):
     # Change in SQLAlchemy 1.4
     # https://help.heroku.com/ZKNTJQSK/why-is-sqlalchemy-1-4-x-not-connecting-to-heroku-postgres
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://")
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgres://", "postgresql+psycopg2://")
 
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL, echo=False)
 
 
 def create_db_and_tables():
