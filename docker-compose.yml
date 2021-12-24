@@ -21,7 +21,7 @@ services:
     build: ./server/
     container_name: grading-site-api
     ports:
-      - "5000:5000"
+      - "5001:5000"
     volumes:
       - ./server/:/home/worker/code/
       - venv:/home/worker/code/venv/

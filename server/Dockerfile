@@ -15,7 +15,7 @@ RUN python3 -m pip install --user -r requirements.txt
 
 COPY --chown=worker:worker . .
 
-EXPOSE 5000
+EXPOSE 5001
 
 # CMD ["bash"]
 CMD ["python3", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000", "--reload"]
