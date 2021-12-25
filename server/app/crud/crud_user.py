@@ -1,9 +1,7 @@
 from typing import Optional
 
-from fastapi.exceptions import HTTPException
-
 from app.core.security import get_password_hash, verify_password
-from app.models import Comment, User
+from app.models import User
 from sqlmodel import Session, select
 
 

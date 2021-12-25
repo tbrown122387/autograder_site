@@ -1,18 +1,20 @@
 from typing import Generator
 
 import pytest
+from app.core import security
+from app.core.config import settings
+from app.crud import crud_user
 from app.db import engine
 from app.main import app
-from app.core.config import settings
-from app.core import security
-from app.crud import crud_user
 from app.models import User
+from app.tests.utils.utils import get_token_headers
 from fastapi.testclient import TestClient
 from sqlmodel import Session
-from app.tests.utils.utils import get_token_headers
+
+# more info on fixtures https://docs.pytest.org/en/6.2.x/fixture.html
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="module")  # scope
 def client() -> Generator:
     with TestClient(app) as c:
         yield c
