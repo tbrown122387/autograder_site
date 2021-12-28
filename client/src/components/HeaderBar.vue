@@ -1,4 +1,4 @@
-.<template>
+<template>
   <v-app-bar color="teal" dark>
     <v-container>
       <v-app-bar-title>Autograding Bundler</v-app-bar-title>
@@ -17,6 +17,3 @@ export default {
   name: "HeaderBar",
 };
 </script>
-
-<style>
-</style>

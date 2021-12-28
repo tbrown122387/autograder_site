@@ -2,6 +2,9 @@
 const MonacoEditorPlugin = require("monaco-editor-webpack-plugin");
 
 module.exports = {
+  devServer: {
+    proxy: "http://localhost:8080",
+  },
   plugins: [
     new MonacoEditorPlugin({
       // https://github.com/Microsoft/monaco-editor-webpack-plugin#options

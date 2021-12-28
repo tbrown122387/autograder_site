@@ -7,4 +7,7 @@ module.exports = {
     },
   },
   publicPath: process.env.NODE_ENV === "production" ? "/autograder_site/" : "/",
+  devServer: {
+    proxy: "http://localhost:8080",
+  },
 };

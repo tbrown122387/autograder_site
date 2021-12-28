@@ -3,12 +3,12 @@
     <v-row justify="center">
       <v-col xs="12" sm="8" md="6">
         <v-card elevation="2">
-          <v-card-title>Login</v-card-title>
+          <v-card-title>Create an Account</v-card-title>
           <v-card-text>
             <v-form
               v-model="valid"
               @submit.prevent="submitForm"
-              id="loginForm"
+              id="registerForm"
               ref="form"
             >
               <v-text-field
@@ -29,25 +29,22 @@
                 type="password"
               ></v-text-field>
             </v-form>
-            <div v-if="isErrorLoggingIn">
+            <div v-if="isErrorRegistering">
               <v-alert
-                :value="isErrorLoggingIn"
+                :value="isErrorRegistering"
                 transition="fade-transition"
                 type="error"
               >
-                Incorrect email or password
+                Email already in use.
               </v-alert>
             </div>
 
-            <router-link to="/recover-password">
-              Forgot your password?
-            </router-link>
-            <router-link to="/register"> Create an account </router-link>
+            <router-link to="/login"> Back to Login </router-link>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn type="submit" form="loginForm" color="teal" dark>
-              Login
+            <v-btn type="submit" form="registerForm" color="teal" dark>
+              Register
             </v-btn>
           </v-card-actions>
           {{ email }}
@@ -62,7 +59,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "LoginView",
+  name: "RegisterView",
   components: {},
   data: function () {
     return {
@@ -72,15 +69,17 @@ export default {
     };
   },
   methods: {
-    ...mapActions("Auth", ["actionGetToken", "actionRegister"]),
+    ...mapActions("Auth", ["actionRegister"]),
     submitForm() {
-      console.log("Starting log in process...");
-      this.actionGetToken(this.email, this.password);
-      console.log("Ending log in process...");
+      this.actionRegister(this.email, this.password).then(() => {
+        if (!this.isErrorRegistering) {
+          this.$router.push({ path: "login" });
+        }
+      });
     },
   },
   computed: {
-    ...mapState("Auth", ["isLoggedIn", "isErrorLoggingIn"]),
+    ...mapState("Auth", ["isLoggedIn", "isErrorRegistering"]),
   },
 };
 </script>

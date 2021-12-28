@@ -91,6 +91,7 @@
                             :rules="assignmentNameRules"
                             label="Assignment Name"
                             placeholder="Ex: assignment01.R"
+                            color="teal"
                             required
                           />
                         </v-col>
@@ -100,6 +101,7 @@
                             v-model="packageNames"
                             label="Additional Packages (optional)"
                             placeholder="Ex: survival, stringr, caret"
+                            color="teal"
                           />
                         </v-col>
 
@@ -108,6 +110,7 @@
                             label="Datasets (optional)"
                             :rules="filesRule"
                             v-model="datasets"
+                            color="teal"
                             multiple
                             show-size
                             counter
@@ -161,6 +164,7 @@
                             label="Visibility"
                             v-model="visibilities[n - 1]"
                             :rules="existsRule"
+                            color="teal"
                             required
                             outlined
                             dense
@@ -172,6 +176,7 @@
                             v-model="codes[n - 1]"
                             :rules="existsRule"
                             placeholder="Ex: length(lm.mod$coefficients) == 4"
+                            color="teal"
                             required
                             outlined
                             dense
@@ -373,4 +378,3 @@ export default {
   },
 };
 </script>
-
