@@ -1,4 +1,4 @@
-const envApiUrl = process.env.VUE_APP_API_ENDPOINT;
+const envApiUrl = "http://localhost:5001";
 const API_V1 = "/api/v1";
 
 export const apiUrl = envApiUrl;

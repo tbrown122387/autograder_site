@@ -1,6 +1,4 @@
-import axios from "axios";
 import { api } from "../api";
-import router from "../router";
 import { saveLocalToken, getLocalToken, removeLocalToken } from "../utils";
 
 const state = () => ({
@@ -8,6 +6,7 @@ const state = () => ({
   token: "",
   isLoggedIn: false,
   isErrorLoggingIn: false,
+  errorLoggingIn: {},
   isErrorRegistering: false,
 });
 
@@ -15,21 +14,21 @@ const getters = {};
 
 const actions = {
   async actionGetToken({ commit, dispatch }, email, password) {
-    try {
-      const response = await api.logInGetToken(email, password);
-      const token = response.data.access_token;
-      if (token) {
-        saveLocalToken(token);
-      }
-      commit("commitSetIsLoggedIn", true);
-      commit("commitSetIsErrorLoggingIn", false);
-      commit("commitSetEmail", email);
-      dispatch("actionLogIn");
-    } catch (error) {
-      console.log("There was an error in logging in");
-      commit("commitSetIsErrorLoggingIn", true);
-      commit("commitSetEmail", "");
-    }
+    return api
+      .logInGetToken(email, password)
+      .then((response) => {
+        const token = response.data.access_token;
+        if (token) {
+          saveLocalToken(token);
+        }
+        commit("commitSetToken", token);
+        dispatch("actionLogIn", email);
+      })
+      .catch((error) => {
+        commit("commitSetIsErrorLoggingIn", true);
+        commit("commitSetErrorLoggingIn", { error });
+        commit("commitSetEmail", "");
+      });
   },
   async actionRegister({ commit }, email, password) {
     try {
@@ -37,7 +36,6 @@ const actions = {
       commit("commitSetIsErrorRegistering", false);
       commit("commitSetIsErrorLoggingIn", false);
     } catch (error) {
-      console.log("There was an error in registering");
       commit("commitSetIsErrorRegistering", true);
     }
   },
@@ -51,10 +49,10 @@ const actions = {
       }
     }
     if (token) {
+      // token in local storage or vuex store
       try {
         const response = await api.getAccount(token);
-        console.log(JSON.stringify(response));
-        dispatch("actionLogIn");
+        dispatch("actionLogIn", response.data.email);
       } catch (error) {
         dispatch("actionLogOut");
       }
@@ -62,25 +60,20 @@ const actions = {
       dispatch("actionLogOut");
     }
   },
-  async actionLogIn() {
-    if (
-      router.currentRoute.path === "/login" ||
-      router.currentRoute.path === "/register"
-    ) {
-      router.push({ path: "account" });
-    }
+  async actionLogIn({ commit }, email) {
+    commit("commitSetIsLoggedIn", true);
+    commit("commitSetIsErrorLoggingIn", false);
+    commit("commitSetErrorLoggingIn", {});
+    commit("commitSetEmail", email);
   },
-  async actionLogOut({ commit }) {
+  async actionLogOut({ commit, state, dispatch }) {
     removeLocalToken();
     commit("commitSetEmail", "");
     commit("commitSetToken", "");
+    if (state.isLoggedIn) {
+      dispatch("RGradingGradescope/clearAssignmentStore", null, { root: true });
+    }
     commit("commitSetIsLoggedIn", false);
-    router.push({ path: "login" });
-  },
-  setComments: function ({ commit }) {
-    axios
-      .get(process.env.VUE_APP_API_ENDPOINT + "/comments")
-      .then((response) => commit("setComments", response.data));
   },
 };
 
@@ -96,6 +89,9 @@ const mutations = {
   },
   commitSetIsErrorLoggingIn(state, isErrorLoggingIn) {
     state.isErrorLoggingIn = isErrorLoggingIn;
+  },
+  commitSetErrorLoggingIn(state, errorLoggingIn) {
+    state.errorLoggingIn = errorLoggingIn;
   },
   commitSetIsErrorRegistering(state, isErrorRegistering) {
     state.isErrorRegistering = isErrorRegistering;

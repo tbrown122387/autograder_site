@@ -1,16 +1,14 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import RGradingGradescope from "./modules/rgrading_gradescope";
-import Auth from "./auth";
+import { createStore } from "vuex";
+import RGradingGradescope from "./rGradingModule.js";
+import AuthModule from "./authModule.js";
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default createStore({
   state: {},
   mutations: {},
   actions: {},
   modules: {
     RGradingGradescope,
-    Auth,
+    AuthModule,
   },
+  strict: process.env.NODE_ENV !== "production",
 });
