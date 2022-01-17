@@ -29,9 +29,9 @@ def authenticate_user(session: Session, username: str, password: str):
 
 def get_user_from_email(session: Session, email: str) -> Optional[User]:
     statement = select(User).where(User.email == email)
-    results = session.exec(statement).first()
-    if results:
-        return results
+    user = session.exec(statement).first()
+    if user:
+        return user
 
 
 def delete_user_from_id(session: Session, id: int):

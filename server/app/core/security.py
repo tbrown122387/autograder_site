@@ -35,6 +35,21 @@ def get_password_hash(password: str):
     return pwd_context.hash(password)
 
 
+def decode_jwt_exception(token, hashed_pw: str = None):
+    # TODO: combine with decode_jwt
+    if token:
+        if hashed_pw:
+            payload = jwt.decode(token, hashed_pw, algorithms=[
+                settings.ALGORITHM])
+        else:
+            payload = jwt.decode(token, settings.SECRET_KEY,
+                                 algorithms=[settings.ALGORITHM])
+        email = payload.get("sub")
+        return email
+    else:
+        return None
+
+
 def decode_jwt(token, hashed_pw: str = None):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -42,16 +57,10 @@ def decode_jwt(token, hashed_pw: str = None):
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        if hashed_pw:
-            payload = jwt.decode(token, hashed_pw, algorithms=[
-                                 settings.ALGORITHM])
-        else:
-            payload = jwt.decode(token, settings.SECRET_KEY,
-                                 algorithms=[settings.ALGORITHM])
-        email = payload.get("sub")
+        email = decode_jwt_exception(token, hashed_pw)
         if email is None:
             raise credentials_exception
         token_data = TokenData(email=email)
+        return token_data
     except JWTError:
         raise credentials_exception
-    return token_data

@@ -1,7 +1,7 @@
+import os
 from typing import Optional
 
-import os
-from sqlmodel import create_engine, SQLModel
+from sqlmodel import create_engine
 
 
 def get_database_uri() -> str:
@@ -29,7 +29,3 @@ DATABASE_URL = get_database_uri()
 
 
 engine = create_engine(DATABASE_URL, echo=False)
-
-
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)

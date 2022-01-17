@@ -1,6 +1,4 @@
-from typing import Optional
-
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class Token(BaseModel):
@@ -14,3 +12,8 @@ class TokenData(BaseModel):
 
 class RequestPasswordReset(BaseModel):
     email: str
+
+
+class EmailSchema(BaseModel):
+    email: EmailStr
+    name: str

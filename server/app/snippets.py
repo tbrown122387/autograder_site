@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 
 setup_sh = """#!/usr/bin/env bash
@@ -30,7 +30,7 @@ test_that('{label} ({visibility})', {{
 }})"""
 
 
-def make_setup_sh(package_names: List[str]):
+def make_setup_sh(package_names: Optional[List[str]]):
     """setup.sh"""
     install_packages = "Rscript -e \"install.packages('gradeR')\""
     if package_names:
