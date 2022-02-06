@@ -41,9 +41,6 @@
 
           <div class="flex flex-grow gap-2">
             <div>
-              {{ assignment.id }}
-            </div>
-            <div>
               {{ getBundleNameText(assignment.bundleName) }}
             </div>
             <div class="flex-grow"></div>

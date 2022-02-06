@@ -120,3 +120,8 @@ def reset_password_logged_in(
         return user
     else:  # should never happen
         raise HTTPException(status_code=400, detail="There is no account with this email")
+
+
+@router.get("/users")
+def get_users(session: Session = Depends(deps.get_session)):
+    return crud_user.get_all_users(session)

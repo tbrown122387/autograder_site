@@ -1,3 +1,4 @@
 samples/
 .env
 old_client/
+.Rproj.user

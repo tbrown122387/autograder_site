@@ -15,6 +15,18 @@
         <div class="text-xs text-red-500" :class="v$.password.$error ? 'visible' : 'invisible'">
           {{ getErrorText(v$.password.$errors, { name: "Password", length: 6 }) }}
         </div>
+        <input
+          class="textbox"
+          :class="v$.confirmPassword.$error && 'error'"
+          type="password"
+          placeholder="Confirm Password"
+          :value="confirmPassword"
+          @input="changeConfirmPassword"
+          @keyup.enter="submitForm"
+        />
+        <div class="text-xs text-red-500" :class="v$.confirmPassword.$error ? 'visible' : 'invisible'">
+          {{ getErrorText(v$.confirmPassword.$errors, { name: "Confirm Password" }) }}
+        </div>
         <button
           class="w-full p-2 font-bold text-white rounded shadow focus:outline-none"
           :class="loading ? 'bg-gray-700 cursor-default' : 'green-button'"
@@ -27,16 +39,20 @@
           </div>
           <div v-else>Reset Password</div>
         </button>
+        <div>
+          <p>
+            {{ confirmationMessage }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
 import useVuelidate from "@vuelidate/core";
 import { api } from "@/api";
-import { required, minLength } from "@vuelidate/validators";
+import { required, minLength, sameAs } from "@vuelidate/validators";
 import { getErrorMessage } from "../utils";
 
 export default {
@@ -48,24 +64,25 @@ export default {
   data: function () {
     return {
       password: "",
+      confirmPassword: "",
+      confirmationMessage: "",
       loading: false,
+      vuelidateExternalResults: {
+        password: [],
+      },
     };
   },
-  computed: {
-    ...mapState("AuthModule", ["isLoggedIn", "isErrorLoggingIn", "errorLoggingIn"]),
-  },
   methods: {
-    ...mapActions("AuthModule", ["actionGetToken", "actionRegister"]),
     getErrorText(error, fieldData) {
       return getErrorMessage(error, fieldData);
     },
-
     changePassword(e) {
       this.password = e.target.value;
       this.v$.password.$touch();
-      if (this.isErrorLoggingIn) {
-        this.v$.$clearExternalResults();
-      }
+    },
+    changeConfirmPassword(e) {
+      this.confirmPassword = e.target.value;
+      this.v$.confirmPassword.$touch();
     },
     async submitForm() {
       const isFormCorrect = await this.v$.$validate();
@@ -73,16 +90,23 @@ export default {
         this.loading = true;
         api
           .resetPasswordToken(this.$route.query.email, this.password, this.$route.query.token)
-          .then((response) => console.log(response.data))
-          .catch((error) => console.log(error))
+          .then(() => {
+            this.confirmationMessage = "Success, please close this page";
+          })
+          .catch(() => {
+            const errors = {
+              password: ["An error occured, please try again later"],
+            };
+            Object.assign(this.vuelidateExternalResults, errors);
+          })
           .finally(() => (this.loading = false));
       }
     },
   },
-
   validations() {
     return {
       password: { required, minLength: minLength(6) },
+      confirmPassword: { required, sameAsConfirmPassword: sameAs(this.password) },
     };
   },
 };

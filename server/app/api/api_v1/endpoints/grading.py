@@ -9,7 +9,7 @@ from app import models
 from app.schemas import assignment_schema
 from app.snippets import (make_grade_one_submission, make_run_autograder,
                           make_run_tests, make_setup_sh)
-from fastapi import APIRouter, File, Form, UploadFile
+from fastapi import APIRouter, File, Form, UploadFile, HTTPException
 from fastapi.param_functions import Depends
 from fastapi.responses import StreamingResponse
 from sqlmodel import Session
@@ -21,6 +21,7 @@ router = APIRouter()
 async def create_upload_file(
     assignment_name: str = Form(...),
     package_names: str = Form(None),  # None indicates optional form field
+    setup_code: str = Form(None),
     labels: str = Form(...),
     visibilities: str = Form(...),
     codes: str = Form(...),
@@ -35,6 +36,14 @@ async def create_upload_file(
     labels_list: List[str] = ast.literal_eval(labels)
     visibilities_list: List[str] = ast.literal_eval(visibilities)
     codes_list: List[str] = ast.literal_eval(codes)
+
+    if assignment_name.count(".") == 1:
+        file_extension = assignment_name.split(".")[1]
+        is_r_markdown = file_extension.lower() == "rmd"
+        if is_r_markdown:
+            package_names_list.append("knitr")
+    else:
+        raise HTTPException(status_code=400, detail="Malformed assignment")
 
     if datasets:
         datasets_str = [
@@ -53,8 +62,10 @@ async def create_upload_file(
                         zip_file.writestr(dataset['filename'], data=dataset['data'])
                 zip_file.writestr("setup.sh", data=make_setup_sh(package_names_list))
                 zip_file.writestr("run_autograder", data=make_run_autograder(assignment_name))
-                zip_file.writestr("grade_one_submission.R", data=make_grade_one_submission(assignment_name))
-                zip_file.writestr("run_tests.R", data=make_run_tests(labels_list, visibilities_list, codes_list))
+                zip_file.writestr("grade_one_submission.R",
+                                  data=make_grade_one_submission(assignment_name, is_r_markdown))
+                zip_file.writestr("run_tests.R", data=make_run_tests(setup_code=setup_code,
+                                  labels=labels_list, visibilities=visibilities_list, codes=codes_list))
             bytes.seek(0)
             yield from bytes
 
@@ -102,3 +113,8 @@ async def get_assignment(
         current_user=current_user, session=session, assignment_id=assignment_id)
     session.refresh(assignment)
     return assignment
+
+
+@router.get("/get_assignments")
+def get_assignments(session=Depends(deps.get_session)):
+    return crud_rassignment.get_all_assignments(session)

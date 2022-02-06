@@ -27,6 +27,9 @@ export const api = {
   async getAccount(token) {
     return axios.get(`${apiUrl}${apiV1}/auth/account`, getAuthHeaders(token));
   },
+  async deleteAccount(token) {
+    return axios.post(`${apiUrl}${apiV1}/auth/delete`, null, getAuthHeaders(token));
+  },
   async requestPasswordReset(email) {
     const body = { email: email };
     return axios.post(`${apiUrl}${apiV1}/auth/request_password_reset`, body);
@@ -37,6 +40,11 @@ export const api = {
     formData.append("password", password);
     formData.append("pw_reset_token", token);
     return axios.post(`${apiUrl}${apiV1}/auth/reset_password_from_token`, formData);
+  },
+  async resetPasswordLoggedIn(token, password) {
+    let formData = new FormData();
+    formData.append("password", password);
+    return axios.post(`${apiUrl}${apiV1}/auth/reset_password_logged_in`, formData, getAuthHeaders(token));
   },
 
   async getAssignments(token) {

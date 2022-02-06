@@ -18,6 +18,8 @@ export const getErrorMessage = (error, fieldData) => {
         return "Not a valid email address.";
       case "minLength":
         return `${fieldData.name} must be at least ${fieldData.length} characters long.`;
+      case "sameAsPassword":
+        return `Passwords must match`;
       default:
         return error[0].$message;
     }

@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     # openssl rand -hex 32
     SECRET_KEY: str = os.environ['SECRET_KEY']
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
     API_V1_STR: str = "/api/v1"
 
     PW_RESET_TOKEN_EXPIRE_MINUTES: int = 60 * 24

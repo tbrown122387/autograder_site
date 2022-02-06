@@ -27,6 +27,18 @@
         <div class="text-xs text-red-500" :class="v$.password.$error ? 'visible' : 'invisible'">
           {{ getErrorText(v$.password.$errors, { name: "Password", length: 6 }) }}
         </div>
+        <input
+          class="textbox"
+          :class="v$.confirmPassword.$error && 'error'"
+          type="password"
+          placeholder="Confirm Password"
+          :value="confirmPassword"
+          @input="changeConfirmPassword"
+          @keyup.enter="submitForm"
+        />
+        <div class="text-xs text-red-500" :class="v$.confirmPassword.$error ? 'visible' : 'invisible'">
+          {{ getErrorText(v$.confirmPassword.$errors, { name: "Confirm Password" }) }}
+        </div>
 
         <button
           class="w-full p-2 font-bold text-white transition duration-100 rounded shadow focus:outline-none"
@@ -54,7 +66,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import useVuelidate from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
+import { required, email, minLength, sameAs } from "@vuelidate/validators";
 import { getErrorMessage } from "../utils";
 
 export default {
@@ -67,8 +79,9 @@ export default {
     return {
       inputEmail: "",
       password: "",
+      confirmPassword: "",
       debugData: [],
-      vuelidateExternalResults: { inputEmail: [], password: [] },
+      vuelidateExternalResults: { inputEmail: [], password: [], confirmPassword: [] },
       loading: false,
     };
   },
@@ -76,7 +89,7 @@ export default {
     ...mapState("AuthModule", ["isLoggedIn", "isErrorRegistering", "errorRegistering"]),
   },
   methods: {
-    ...mapActions("AuthModule", ["actionGetToken", "actionRegister"]),
+    ...mapActions("AuthModule", ["actionRegister"]),
     getErrorText(error, fieldData) {
       return getErrorMessage(error, fieldData);
     },
@@ -95,11 +108,18 @@ export default {
         this.v$.$clearExternalResults();
       }
     },
+    changeConfirmPassword(e) {
+      this.confirmPassword = e.target.value;
+      this.v$.confirmPassword.$touch();
+      if (this.isErrorRegistering) {
+        this.v$.$clearExternalResults();
+      }
+    },
     async submitForm() {
       const isFormCorrect = await this.v$.$validate();
       if (isFormCorrect && !this.loading) {
         this.loading = true;
-        this.actionRegister(this.inputEmail, this.password)
+        this.actionRegister({ email: this.inputEmail, password: this.password })
           .then(() => {
             if (this.isErrorRegistering && this.errorRegistering.error.response.status == 400) {
               const errors = {
@@ -125,6 +145,7 @@ export default {
     return {
       inputEmail: { required, email },
       password: { required, minLength: minLength(6) },
+      confirmPassword: { required, sameAsPassword: sameAs(this.password) },
     };
   },
 };

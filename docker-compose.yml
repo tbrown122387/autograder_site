@@ -21,7 +21,7 @@ services:
     build: ./server/
     container_name: grading-site-api
     # run database migrations and launch dev server
-    command: ./startup_script.sh
+    command: ["bash", "startup_script.sh"]
     ports:
       - "5001:5000"
     volumes:

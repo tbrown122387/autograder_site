@@ -82,7 +82,7 @@ export default {
     ...mapState("AuthModule", ["isLoggedIn", "isErrorLoggingIn", "errorLoggingIn"]),
   },
   methods: {
-    ...mapActions("AuthModule", ["actionGetToken", "actionRegister"]),
+    ...mapActions("AuthModule", ["actionGetToken"]),
     getErrorText(error, fieldData) {
       return getErrorMessage(error, fieldData);
     },
@@ -105,7 +105,7 @@ export default {
       const isFormCorrect = await this.v$.$validate();
       if (isFormCorrect && !this.loading) {
         this.loading = true;
-        this.actionGetToken(this.inputEmail, this.password)
+        this.actionGetToken({ email: this.inputEmail, password: this.password })
           .then(() => {
             if (this.isErrorLoggingIn && this.errorLoggingIn.error.response.status == 401) {
               const errors = {

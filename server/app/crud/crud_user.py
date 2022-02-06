@@ -47,3 +47,7 @@ def create_user(session: Session, user: User):
     session.commit()
     session.refresh(user)
     return user
+
+
+def get_all_users(session: Session):
+    return session.exec(select(User)).all()

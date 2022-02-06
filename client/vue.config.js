@@ -6,8 +6,6 @@ module.exports = {
       title: "Autograding Bundler",
     },
   },
-  publicPath: process.env.NODE_ENV === "production" ? "/autograder_site/" : "/",
-  devServer: {
-    proxy: "http://localhost:8080",
-  },
+  publicPath: "/",
+  // publicPath: process.env.NODE_ENV === "production" ? "/autograder_site/" : "/",
 };

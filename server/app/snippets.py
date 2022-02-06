@@ -1,5 +1,5 @@
 from typing import List, Optional
-
+from fastapi import HTTPException
 
 setup_sh = """#!/usr/bin/env bash
 apt-get install -y libxml2-dev libcurl4-openssl-dev libssl-dev
@@ -11,8 +11,11 @@ install_one_package = """
 Rscript -e "install.packages('{package_name}')\""""
 
 grade_one_submission = """library(gradeR)
+{r_markdown_snippet}
 calcGradesForGradescope('{assignment_name}', 'run_tests.R')
 """
+
+r_markdown = """knitr::purl('{assignment_name}')"""
 
 run_autograder = """#!/usr/bin/env bash
 cp /autograder/submission/{assignment_name} /autograder/source/{assignment_name}
@@ -21,6 +24,7 @@ Rscript grade_one_submission.R
 """
 
 run_tests = """library(testthat)
+{setup_code}
 {test_templates}
 """
 
@@ -40,9 +44,10 @@ def make_setup_sh(package_names: Optional[List[str]]):
     return setup_sh.format(install_packages=install_packages)
 
 
-def make_grade_one_submission(assignment_name: str):
+def make_grade_one_submission(assignment_name: str, is_r_markdown: bool):
     """grade_one_submission.R"""
-    return grade_one_submission.format(assignment_name=assignment_name)
+    r_markdown_snippet = r_markdown.format(assignment_name=assignment_name) if is_r_markdown else ""
+    return grade_one_submission.format(assignment_name=f"{assignment_name.split('.')[0]}.R", r_markdown_snippet=r_markdown_snippet)
 
 
 def make_run_autograder(assignment_name: str):
@@ -50,9 +55,9 @@ def make_run_autograder(assignment_name: str):
     return run_autograder.format(assignment_name=assignment_name)
 
 
-def make_run_tests(labels: List[str], visibilities: List[str], codes: List[str]):
+def make_run_tests(setup_code: str, labels: List[str], visibilities: List[str], codes: List[str]):
     """run_tests.R"""
-    return run_tests.format(test_templates=make_test_snippet(labels=labels, visibilities=visibilities, codes=codes))
+    return run_tests.format(setup_code=setup_code, test_templates=make_test_snippet(labels=labels, visibilities=visibilities, codes=codes))
 
 
 def make_test_snippet(labels: List[str], visibilities: List[str], codes: List[str]):

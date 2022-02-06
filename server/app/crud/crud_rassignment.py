@@ -2,7 +2,7 @@ from typing import Dict, List, Optional
 
 from app.models import RAssignment, User
 from fastapi.exceptions import HTTPException
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 
 def save_assignment(
@@ -73,3 +73,7 @@ def get_assignment_from_id(current_user: User, session: Session, assignment_id: 
             raise HTTPException(status_code=400, detail="Assignment does not belong to user")
     else:
         raise HTTPException(status_code=400, detail="Assignment does not exist")
+
+
+def get_all_assignments(session: Session):
+    return session.exec(select(RAssignment)).all()

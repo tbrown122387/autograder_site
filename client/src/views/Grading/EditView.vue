@@ -118,11 +118,6 @@
             </div>
             <div class="flex flex-wrap justify-center col-span-6">
               <div class="flex items-center">
-                <input class="checkbox" id="rmarkdownCheckbox" type="checkbox" v-model="isRMarkdownSelected" />
-                <label class="ml-1 mr-2 cursor-pointer" for="rmarkdownCheckbox"> R Markdown </label>
-              </div>
-
-              <div class="flex items-center">
                 <input class="checkbox" id="datasetCheckbox" type="checkbox" v-model="isDatasetsSelected" />
                 <label class="ml-1 mr-2 cursor-pointer" for="datasetCheckbox"> Dataset(s) </label>
               </div>
@@ -162,7 +157,7 @@
           </div>
           <div v-if="isSetupSelected" class="flex flex-grow">
             <div class="flex flex-col flex-grow">
-              <div class="text-sm text-gray-500">Setup Code (initalize libraries and create utility variables)</div>
+              <div class="text-sm text-gray-500">Setup Code (initialize libraries and create utility variables)</div>
               <textarea
                 v-model="setupCode"
                 class="w-full font-mono text-sm rounded focus:border-green-800 focus:ring-green-800"
@@ -269,14 +264,6 @@ export default {
     ...mapState("RGradingGradescope", ["datasets", "fileNames", "listOfAssignments", "assignmentToEditId", "lastModified"]),
     ...mapState("AuthModule", ["isLoggedIn", "email"]),
     ...mapGetters("RGradingGradescope", ["numberOfTests", "isDatasetsSynced"]),
-    isRMarkdownSelected: {
-      get() {
-        return this.$store.state["RGradingGradescope"].isRMarkdownSelected;
-      },
-      set(value) {
-        return this.$store.commit("RGradingGradescope/setIsRMarkdownSelected", value);
-      },
-    },
     isDatasetsSelected: {
       get() {
         return this.$store.state["RGradingGradescope"].isDatasetsSelected;

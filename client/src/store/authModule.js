@@ -13,16 +13,16 @@ const state = () => ({
 const getters = {};
 
 const actions = {
-  async actionGetToken({ commit, dispatch }, email, password) {
+  async actionGetToken({ commit, dispatch }, data) {
     return api
-      .logInGetToken(email, password)
+      .logInGetToken(data.email, data.password)
       .then((response) => {
         const token = response.data.access_token;
         if (token) {
           saveLocalToken(token);
         }
         commit("commitSetToken", token);
-        dispatch("actionLogIn", email);
+        dispatch("actionLogIn", data.email);
       })
       .catch((error) => {
         commit("commitSetIsErrorLoggingIn", true);
@@ -30,9 +30,9 @@ const actions = {
         commit("commitSetEmail", "");
       });
   },
-  async actionRegister({ commit }, email, password) {
+  async actionRegister({ commit }, data) {
     try {
-      await api.registerAccount(email, password);
+      await api.registerAccount(data.email, data.password);
       commit("commitSetIsErrorRegistering", false);
       commit("commitSetIsErrorLoggingIn", false);
     } catch (error) {

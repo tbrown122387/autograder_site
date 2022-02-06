@@ -5,7 +5,6 @@ const state = () => ({
   bundleName: "",
   assignmentName: "",
   packageNames: "",
-  isRMarkdownSelected: false,
   isDatasetsSelected: false,
   isPackagesSelected: false,
   isSetupSelected: false,
@@ -92,11 +91,6 @@ const actions = {
         } else {
           commit("setIsPackagesSelected", false);
         }
-        if (data.assignment_name && data.assignment_name.substr(data.assignment_name.length - 4).toLowerCase() === ".rmd") {
-          commit("setIsRMarkdownSelected", true);
-        } else {
-          commit("setIsRMarkdownSelected", false);
-        }
       })
       .catch((error) => console.log({ error }));
   },
@@ -141,7 +135,6 @@ const actions = {
     commit("setAssignmentName", "");
     commit("setPackageNames", "");
     commit("setIsSetupSelected", false);
-    commit("setIsRMarkdownSelected", false);
     commit("setIsPackagesSelected", false);
     commit("setIsDatasetsSelected", false);
     commit("setSetupCode", "");
@@ -173,9 +166,7 @@ const mutations = {
   setFileNames: function (state, fileNames) {
     state.fileNames = fileNames;
   },
-  setIsRMarkdownSelected: function (state, isRMarkdownSelected) {
-    state.isRMarkdownSelected = isRMarkdownSelected;
-  },
+
   setIsDatasetsSelected: function (state, isDatasetsSelected) {
     state.isDatasetsSelected = isDatasetsSelected;
   },

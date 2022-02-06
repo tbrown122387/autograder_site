@@ -3,13 +3,13 @@
 This folder contains the code for the frontend portion of the website.
 
 ## Technical Details
-Vue 2 is being used with the following integrations/plugins
+Vue 3 is being used with the following integrations/plugins
 
-> Vue 2 is being used instead of Vue 3 because Vuetify has not yet updated.
+1. [Vuex](https://vuex.vuejs.org/) - State Management
+2. [Vue Router](https://router.vuejs.org/) - Web Router
+3. [Tailwind 2.0](https://v2.tailwindcss.com/) - CSS Framework
+4. [Vuelidate](https://vuelidate-next.netlify.app/) - Validation Framework
 
-1. [Vuetify](https://vuetifyjs.com/en/)
-2. [Vuex](https://vuex.vuejs.org/)
-3. [Vue Router](https://router.vuejs.org/)
 
 ## How it works
 
@@ -17,11 +17,9 @@ All the development code is located in the `src` folder. To use the website in p
 
 `App.vue` contains the navigation bar at the top, an empty footer, and the `<router-view>`. This `<router-view>` is defined in `src/router/index.js`. Each url is given a "View" from `src/views/`. For `/` (root of the website, i.e. `localhost:8080/` when running locally), `src/views/HomeView.vue` is what is displayed. The "Home" view can also use components which are defined in the `src/components/` folder. Components are what makes development fast and easy, because pieces can be generalized and reused for different pages.
 
-> The following paragraph does not exist in the current version. However, `src/views/GradingView` contains an example of a POST HTTP request to upload the files and grading data.
- 
-The "About" view, whose code is in `src/views/About.vue` demonstrates how to call an API from the frontend. When a button is clicked, a function is run, which in this case uses the `axios` HTTP client to make a request to the backend. The reactive value `text` is then set to the response of the API call.
+`src/store/index.js` shows the Vuex store. The other files in the `store/` directory are specific modules for different sections of the application.
 
-`package.json` details all the packages needed to run and build this website. The `scripts` section has common commands, so they are easier to run for the developer. `npm run serve` is to launch the developement server. `npm run build` builds a static production version of the site into the `dist/` directory. Then, an HTTP Server can be used to host the files. `python3 -m http.server` is an example of a HTTP Server (for development).
+`package.json` details all the packages needed to run and build this website. The `scripts` section has common commands, so they are easier to run for the developer. `npm run serve` is to launch the developement server. `npm run build` builds a static production version of the site into the `dist/` directory. Then, an HTTP Server can be used to host the files. `python3 -m http.server` is an example of a HTTP Server (not to be used for development).
 
 ## Deployment
 

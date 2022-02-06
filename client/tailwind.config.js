@@ -2,6 +2,7 @@ const colors = require("tailwindcss/colors");
 
 module.exports = {
   content: ["./src/**/*.{html,js}"],
+  purge: ["./src/**/*.vue"],
   theme: {
     listStyleType: {
       square: "square",
