@@ -45,12 +45,12 @@ $ docker compose down
 
 ## TODO
 - [x] Backend - Refactor into Modules
-- [ ] Backend - Authentication
-- [ ] Backend - Testing
+- [x] Backend - Authentication
+- [x] Backend - Testing
+- [x] Support for Setup Code
+- [x] Support for .Rmd
 - [ ] Backend - GitHub Actions for CI
 - [ ] Frontend - Testing
 - [ ] Frontend - GitHub Actions for CI
-- [ ] Support for Setup Code
-- [ ] Support for .Rmd
 - [ ] Zip on Frontend
 - [ ] GitHub Actions for CD
