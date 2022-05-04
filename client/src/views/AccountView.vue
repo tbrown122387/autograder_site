@@ -87,7 +87,7 @@
                   </div>
 
                   <div class="mt-4">
-                    <button type="button" class="p-2 text-white rounded shadow focus:outline-none red-button" @click="closeModal">
+                    <button type="button" class="w-full p-2 text-white rounded shadow focus:outline-none red-button" @click="closeModal">
                       Confirm Delete
                     </button>
                   </div>
@@ -98,15 +98,24 @@
         </Dialog>
       </TransitionRoot>
       <div class="flex flex-col gap-2">
-        {{ editText }}
-      </div>
-      <div class="flex gap-2">
-        <button class="flex-1 flex-grow p-2 font-bold text-white rounded shadow focus:outline-none red-button" @click="submitLogOut">
-          Log Out
-        </button>
-        <button class="flex-1 flex-grow p-2 font-bold text-white rounded shadow focus:outline-none red-button" @click="openModal">
-          Delete Account
-        </button>
+        <div class="flex justify-between p-2">
+          <div>
+            {{ editText }}
+          </div>
+          <router-link
+            :to="{ name: 'Grading' }"
+            class="px-2 text-white bg-green-800 rounded-md hover:bg-green-600 focus:outline-none focus:ring-1 focus:ring-white"
+            >Click to go to R Grading
+          </router-link>
+        </div>
+        <div class="flex gap-2">
+          <button class="flex-1 flex-grow p-2 font-bold text-white rounded shadow focus:outline-none red-button" @click="submitLogOut">
+            Log Out
+          </button>
+          <button class="flex-1 flex-grow p-2 font-bold text-white rounded shadow focus:outline-none red-button" @click="openModal">
+            Delete Account
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -210,8 +219,10 @@ export default {
     editText() {
       if (!this.listOfAssignments.length) {
         return "You have no assignments";
+      } else if (this.listOfAssignments.length === 1) {
+        return `${this.listOfAssignments.length} assignment in R`;
       } else {
-        return `${this.listOfAssignments.length} assignments`;
+        return `${this.listOfAssignments.length} assignments in R`;
       }
     },
   },
