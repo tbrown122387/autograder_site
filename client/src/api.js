@@ -77,7 +77,7 @@ export const api = {
     const body = { assignment_id: assignmentId };
     return axios.post(`${apiUrl}${apiV1}/delete_assignment`, body, getAuthHeaders(token));
   },
-  async downloadBundle(assignmentName, datasets, packages, testsCollection) {
+  async downloadBundle(assignmentName, datasets, packages, testsCollection, setupCode) {
     let formData = new FormData();
 
     // TODO: change backend to accept testsCollection JSON instead of arrays
@@ -86,6 +86,7 @@ export const api = {
     const codes = testsCollection.map((test) => test.code);
 
     formData.append("assignment_name", assignmentName);
+    formData.append("setup_code", setupCode);
     formData.append("labels", JSON.stringify(labels));
     formData.append("visibilities", JSON.stringify(visibilities));
     formData.append("codes", JSON.stringify(codes));

@@ -45,26 +45,16 @@
     <div v-if="isPageLoaded" class="mx-auto mt-5 rounded shadow-lg md:w-11/12 xl:max-w-7xl">
       <div class="flex flex-col bg-gray-100 rounded">
         <div v-if="isLoggedIn" class="flex flex-col gap-4 mx-4 mt-4 mb-5">
-          <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center justify-between gap-2" v-if="!hasChanged">
             <router-link :to="{ name: 'List' }" class="px-2 py-1 font-bold green-button">
               <i class="fas fa-chevron-left" />
               Back to List
             </router-link>
-            <div>
-              <span v-if="!hasChanged" class="text-green-700">Autosaved <i class="fas fa-check" /></span>
-              <span v-else class="text-green-700">Saving <i class="fas fa-circle-notch animate-spin" /></span>
-
-              <!-- <button
-                class="px-2 py-1 font-bold rounded shadow"
-                :class="hasChanged || isSaving ? 'blue-button' : 'bg-gray-400 cursor-default'"
-                :disabled="!hasChanged || isSaving"
-                @click="clickSaveButton"
-              >
-                <span v-if="isSaving"> Autosaving <i class="fas fa-circle-notch animate-spin" /> </span>
-                <span v-else-if="hasChanged"> Save </span>
-                <span v-else> Saved </span>
-              </button> -->
-            </div>
+            <span class="text-green-700">Autosaved <i class="fas fa-check" /></span>
+          </div>
+          <div v-else class="flex items-center justify-between gap-2">
+            <div></div>
+            <span class="px-2 py-1 font-bold text-white bg-red-700 rounded">Saving <i class="fas fa-circle-notch animate-spin" /></span>
           </div>
 
           <div>
@@ -383,7 +373,7 @@ export default {
       if (isFormCorrect) {
         this.loading = true;
         api
-          .downloadBundle(this.assignmentName, this.datasets, this.packageNames, this.testsCollection)
+          .downloadBundle(this.assignmentName, this.datasets, this.packageNames, this.testsCollection, this.setupCode)
           .then((response) => {
             autoDownloadFile(response);
           })
